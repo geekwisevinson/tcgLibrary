@@ -50,7 +50,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "tcgLibraryClient:build"
+            "browserTarget": "tcgLibraryClient:build",
+            "port":  2000
           },
           "configurations": {
             "production": {
