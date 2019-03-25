@@ -4,6 +4,8 @@
 
 // SETUP
 
+const environmentObject = require('./src/environments/environment.ts');
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -15,8 +17,44 @@ const port = 7000;
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist/tcgLibraryClient')));
 
-mongoose.connect(Mon, options).then(
-  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
+const gameSchema = new mongoose.Schema({
+  title:  String,
+  developer: String,
+  details:   String,
+  comments: [String],
+  date: { type: Date, default: Date.now },
+  own: Boolean,
+  os: String,
+  meta: {
+    votes: Number,
+  }
+});
+
+gameSchema.methods.findSimilarTypes = function(cb) {
+  return this.model('Game').find({ title: this.title }, cb);
+};
+
+const Game = mongoose.model('Game', gameSchema);
+
+const halo = new Game(
+  {
+    title: 'Halo',
+    developer: 'Microsoft',
+    details: 'First Person Shooter Game',
+    comments: ['First Person', 'Shooter'],
+    own: false,
+    os: 'XBox',
+    meta: {
+      votes: 1
+    }
+  }
+);
+
+
+mongoose.connect(environmentObject.MLABURI, { useNewUrlParser: true }).then(
+  (e) => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
+    console.log('update', );
+  },
   err => { /** handle initial connection error */ }
 );
 
@@ -28,4 +66,12 @@ http.listen(port, function () {
 app.get('/', function catchRoute(req, res) {
   console.log('you came home');
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/games', function catchRoute(req, res) {
+  console.log('you got games');
+  halo.findSimilarTypes(function(err, games) {
+    console.log(games); // woof
+    res.json(games);
+  });
 });
