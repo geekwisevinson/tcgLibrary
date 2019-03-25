@@ -43,4 +43,6 @@ Thumbs.db
 # sensitive data
 ./src/environments/environment.ts
 /src/environments/environment.ts
+environment-const.ts
+./environment-const.ts
 
