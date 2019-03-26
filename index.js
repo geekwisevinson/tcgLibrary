@@ -4,7 +4,7 @@
 
 // SETUP
 
-const environmentObject = require('./src/environments/environment.ts');
+const environmentObject = require('./environment-consts.ts');
 
 const express = require('express');
 const cors = require('cors');
@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist/tcgLibraryClient')));
 
 const gameSchema = new mongoose.Schema({
-  title:  String,
+  title:  {type: String, unique: true, required: true },
   developer: String,
   details:   String,
   comments: [String],
@@ -36,19 +36,7 @@ gameSchema.methods.findSimilarTypes = function(cb) {
 
 const Game = mongoose.model('Game', gameSchema);
 
-const halo = new Game(
-  {
-    title: 'Halo',
-    developer: 'Microsoft',
-    details: 'First Person Shooter Game',
-    comments: ['First Person', 'Shooter'],
-    own: false,
-    os: 'XBox',
-    meta: {
-      votes: 1
-    }
-  }
-);
+
 
 
 mongoose.connect(environmentObject.MLABURI, { useNewUrlParser: true }).then(
@@ -62,7 +50,10 @@ http.listen(port, function () {
   console.log('listening on', port);
 });
 
-
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!')
+});
 app.get('/', function catchRoute(req, res) {
   console.log('you came home');
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -70,8 +61,29 @@ app.get('/', function catchRoute(req, res) {
 
 app.get('/games', function catchRoute(req, res) {
   console.log('you got games');
-  halo.findSimilarTypes(function(err, games) {
-    console.log(games); // woof
+  Game.find({}).then( games => {
     res.json(games);
+  })
+});
+
+app.post('/add-game', function catchRoute(req, res) {
+  console.log('you got games');
+  const game = new Game(
+    {
+      title: 'Halo',
+      developer: 'Microsoft',
+      details: 'First Person Shooter Game',
+      comments: ['First Person', 'Shooter'],
+      own: false,
+      os: 'XBox',
+      meta: {
+        votes: 1
+      }
+    }
+  );
+  game.save().then( (g, err) => {
+    res.json(g);
+  }, (errors) => {
+    console.log('errors', errors);
   });
 });

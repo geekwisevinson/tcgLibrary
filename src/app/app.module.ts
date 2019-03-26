@@ -3,16 +3,20 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { metaReducers, reducers } from './reducers';
 
-@NgModule({
-  declarations: [
+@NgModule ( {
+  declarations : [
     AppComponent
   ],
-  imports: [
+  imports : [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot ( reducers, { metaReducers } ),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+  providers : [],
+  bootstrap : [ AppComponent ]
+} )
+export class AppModule {
+}

@@ -12,6 +12,16 @@
             "element",
             "vf",
             "kebab-case"
-        ]
+        ],
+      "typedef-whitespace": [
+        false,
+        {
+          "call-signature": "onespace",
+          "index-signature": "onespace",
+          "parameter": "onespace",
+          "property-declaration": "onespace",
+          "variable-declaration": "onespace"
+        }
+      ]
     }
 }
