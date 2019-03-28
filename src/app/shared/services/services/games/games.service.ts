@@ -10,4 +10,7 @@ export class GamesService {
   public getGames() {
     return this.api.games.get();
   }
+  public submitGame(game) {
+    return this.api.addGame.post(game);
+  }
 }

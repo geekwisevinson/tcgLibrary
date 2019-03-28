@@ -18,11 +18,11 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'dist/tcgLibraryClient')));
 
 const gameSchema = new mongoose.Schema({
-  title:  {type: String, unique: true, required: true },
+  title: {type: String, unique: true, required: true},
   developer: String,
-  details:   String,
+  details: String,
   comments: [String],
-  date: { type: Date, default: Date.now },
+  date: {type: Date, default: Date.now},
   own: Boolean,
   os: String,
   meta: {
@@ -30,20 +30,20 @@ const gameSchema = new mongoose.Schema({
   }
 });
 
-gameSchema.methods.findSimilarTypes = function(cb) {
-  return this.model('Game').find({ title: this.title }, cb);
+gameSchema.methods.findSimilarTypes = function (cb) {
+  return this.model('Game').find({title: this.title}, cb);
 };
 
 const Game = mongoose.model('Game', gameSchema);
 
 
-
-
-mongoose.connect(environmentObject.MLABURI, { useNewUrlParser: true }).then(
-  (e) => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-    console.log('update', );
+mongoose.connect(environmentObject.MLABURI, {useNewUrlParser: true}).then(
+  (e) => {
+    /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
+    console.log('update',);
   },
-  err => { /** handle initial connection error */ }
+  err => { /** handle initial connection error */
+  }
 );
 
 http.listen(port, function () {
@@ -61,9 +61,15 @@ app.get('/', function catchRoute(req, res) {
 
 app.get('/games', function catchRoute(req, res) {
   console.log('you got games');
-  Game.find({}).then( games => {
+  Game.find({}).then(games => {
     res.json(games);
+    console.log('found');
   })
+});
+
+app.get('/body', function catchRoute(req, res, next) {
+  console.log('you got games');
+  next(new Error('sucks'));
 });
 
 app.post('/add-game', function catchRoute(req, res) {
@@ -81,9 +87,14 @@ app.post('/add-game', function catchRoute(req, res) {
       }
     }
   );
-  game.save().then( (g, err) => {
+  game.save().then((g, err) => {
+    console.log(g, err);
+    if (err) {
+      res.error();
+    }
     res.json(g);
   }, (errors) => {
     console.log('errors', errors);
+    res.error();
   });
 });

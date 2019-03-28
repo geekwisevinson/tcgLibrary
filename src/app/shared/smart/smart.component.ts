@@ -19,7 +19,6 @@ export class SmartComponent implements OnInit, OnDestroy {
 
   constructor (
     public store : Store<State>,
-    public api: ApiService,
   ) {
   }
 
@@ -37,17 +36,7 @@ export class SmartComponent implements OnInit, OnDestroy {
     // over ride this if you want to add to extended;
   }
 
-  public updateSelected () {
-    this.api.addGame.post({
-      title: 'halo',
-    }).subscribe( games => {
-      console.log('api games', games);
-    });
-    this.store.dispatch(stateActions.gameActions.updateSelected('mine'));
-  }
-
   private initializeState () {
-    console.log('init states');
     this.states.forEach( state => {
       console.log ( 'you subscribed to', state );
       const stateSub = this.store.select ( state ).subscribe ( stateValue => {

@@ -1,0 +1,43 @@
+<ng-container *ngIf="form">
+  <form [formGroup]="form">
+    <label for="title">Title</label>
+    <input id="title" type="text" formControlName="title">
+    <label for="developer">Developer</label>
+    <input id="developer" type="text" formControlName="developer">
+    <label for="details">Details</label>
+    <input id="details" type="text" formControlName="details">
+    <label for="own">Own</label>
+    <input id="own" type="checkbox" formControlName="own">
+    <label for="os">O.S.</label>
+    <input id="os" type="text" formControlName="os">
+    <div formArrayName="comments">
+      <div *ngFor="let comment of form.get('comments').controls; let j=index">
+        <h4>Comments {{j+1}}</h4>
+        <div >
+          <input [formControlName]="j" />
+        </div>
+      </div>
+      <button (click)="addComment(form.controls.comments)">Add new Comment</button>
+    </div>
+    <div formGroupName="meta">
+      <div *ngFor="let met of Object.keys(form.get('meta').controls); let j=index">
+        <h4>Meta {{met}}</h4>
+        <div >
+          <input id="textInput" [type]="testNan(form.get('meta').controls[met])" [formControlName]="met" />
+        </div>
+      </div>
+
+    </div>
+    <div>
+      <label for="metaName">Meta Name</label>
+      <input id="metaName" type="text" formControlName="metaName">
+      <button (click)="addMeta(form.get('meta'))">Add new Meta</button>
+    </div>
+  </form>
+
+  <button (click)="submitGame()">Submit Game</button>
+  <pre>
+  {{form.value  | json}}
+</pre>
+</ng-container>
+

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { SmartComponent } from '../smart/smart.component';
 import { Store } from '@ngrx/store';
-import { ApiService } from '../services/api/api.service';
 import { State } from '../../reducers';
 import { GamesService } from '../services/services/games/games.service';
 
@@ -11,19 +10,20 @@ import { GamesService } from '../services/services/games/games.service';
   styleUrls : [ './game-list.component.css' ]
 } )
 export class GameListComponent extends SmartComponent {
+  public gameList = [];
 
   constructor (
     public store : Store<State>,
-    public api : ApiService,
-    public games: GamesService,
+    public games : GamesService,
   ) {
-    super ( store, api );
+    super ( store );
   }
 
   onInit () {
-    console.log('games service', this.games);
-    this.games.getGames().subscribe ( games => {
+    console.log('call games');
+    this.games.getGames ().subscribe ( (games: any[]) => {
       console.log ( 'sub api games', games );
+      this.gameList = games;
     });
   }
 

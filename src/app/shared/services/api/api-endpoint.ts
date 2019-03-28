@@ -163,7 +163,6 @@ export class ApiEndpoint {
 
   public get ( paramRoute? : string, paramHeader? : headerProp ) : Observable<Object> {
     const headers = this.prepareHeader ( paramHeader || this.config.headers.get, false );
-    console.log ( 'headers', headers );
     const route = paramRoute || this.config.route;
 
     const apiRequest = {

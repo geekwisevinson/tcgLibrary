@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './reducers';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule ( {
   declarations : [
@@ -13,6 +14,7 @@ import { metaReducers, reducers } from './reducers';
   imports : [
     BrowserModule,
     AppRoutingModule,
+    SharedModule,
     StoreModule.forRoot ( reducers, { metaReducers } ),
   ],
   providers : [],
