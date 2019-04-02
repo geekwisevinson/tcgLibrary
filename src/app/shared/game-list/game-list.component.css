@@ -1,0 +1,8 @@
+.game-list {
+  background-color: aqua;
+  margin: 1em 0;
+}
+
+.game {
+  border: 1px solid black
+}

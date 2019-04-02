@@ -5,6 +5,9 @@ import { GameListComponent } from './game-list/game-list.component';
 import { GameFormComponent } from './game-form/game-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { ErrorDisplayComponent } from './error-display/error-display.component';
+import { RouterModule } from '@angular/router';
+import { CardFormComponent } from './card-form/card-form.component';
 
 
 @NgModule ( {
@@ -13,11 +16,15 @@ import { NgModule } from '@angular/core';
     ApiModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   declarations : [
     SmartComponent,
     GameListComponent,
     GameFormComponent,
+    ErrorDisplayComponent,
+    CardFormComponent,
+
   ],
   exports : [
     ApiModule,
@@ -25,7 +32,9 @@ import { NgModule } from '@angular/core';
     ReactiveFormsModule,
     SmartComponent,
     GameListComponent,
-    GameFormComponent
+    GameFormComponent,
+    RouterModule,
+    CardFormComponent,
   ]
 } )
 

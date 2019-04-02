@@ -74,6 +74,7 @@ export class ApiEndpoint {
         }
       },
       error => {
+        console.log('i got an error from api', error);
         try {
           apiRequest.response = error.json ();
         } catch ( e ) {

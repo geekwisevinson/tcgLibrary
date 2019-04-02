@@ -1,9 +1,9 @@
-export interface GameState {
+export interface GamesState {
   list : any[];
   selected : string;
 }
 
-const defaultState : GameState = {
+const defaultState : GamesState = {
   list : [],
   selected : null,
 };
@@ -26,7 +26,7 @@ export const gameActions = {
   },
 };
 
-export function GameReducer ( state : GameState = defaultState, action : any ) {
+export function GameReducer ( state : GamesState = defaultState, action : any ) {
   const ngrxRelated = (action.type.indexOf('@ngrx') !== -1);
   const differentState = (action.type.indexOf(storeId) === -1);
   if (differentState && !ngrxRelated) {return state; }

@@ -1,4 +1,11 @@
-<h2>Game List</h2>
-<div *ngFor="let game of gameList">
-  {{game.title}}
+<div class="game-list">
+  <h2>Game List</h2>
+  <div class="game" *ngFor="let game of gameList">
+    <button (click)="gameRemove(game)">X</button>
+    <a [routerLink]="['/game']" [queryParams]="{game: game.title}" fragment="game">
+      {{game.title}}
+    </a>
+
+  </div>
 </div>
+

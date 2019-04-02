@@ -1,0 +1,58 @@
+<ng-container *ngIf="form">
+  <vf-error-display [error]="error"></vf-error-display>
+  <form [formGroup]="form">
+    <ng-container *ngFor="let question of questions">
+
+
+      <ng-container *ngIf="question.type === 'text'">
+        <label [for]="question.prop">{{question.label}}</label>
+        <input [id]="question.prop" type="text" [formControlName]="question.prop" [placeholder]="question.placeholder">
+      </ng-container>
+
+
+      <ng-container *ngIf="question.type === 'checkbox'">
+        <label [for]="question.prop">{{question.label}}</label>
+        <input [id]="question.prop" type="checkbox" [formControlName]="question.prop" [placeholder]="question.placeholder">
+      </ng-container>
+
+      <ng-container *ngIf="question.type === 'form-array-text'">
+        <div [formArrayName]="question.prop">
+          <div *ngFor="let comment of form.get('comments').controls; let j=index">
+            <h4>{{removeS(question.label)}} {{j + 1}}</h4>
+            <div>
+              <input [formControlName]="j"/>
+            </div>
+          </div>
+          <button *ngIf="question.dynamic" (click)="addComment(form.controls.comments)">Add new {{removeS(question.label)}}</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="question.type === 'form-array-object'">
+        <div [formGroupName]="question.prop">
+          <div *ngFor="let prop of Object.keys(form.get(question.prop).controls); let j=index">
+            <h4>{{question.label}} {{prop}}</h4>
+            <div>
+              <input id="textInput" [type]="testNan(form.get(question.prop).controls[prop])" [formControlName]="prop"/>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label [for]="question.propName">{{question.label}} Name</label>
+          <input [id]="question.propName" type="text" [formControlName]="question.propName">
+          <button *ngIf="question.dynamic" (click)="addMeta(form.get(question.prop), question.propName)">Add new {{question.label}}</button>
+        </div>
+      </ng-container>
+
+
+    </ng-container>
+
+
+  </form>
+
+  <button (click)="submitGame()">Submit Game</button>
+</ng-container>
+
+<pre>
+  {{form.value | json}}
+</pre>
+

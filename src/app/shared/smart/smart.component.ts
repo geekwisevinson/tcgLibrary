@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State, stateActions } from '../../reducers';
+import { State } from '../../reducers';
 import { UiState } from '../../reducers/ui/ui-state';
-import { GameState } from '../../reducers/games/game-state';
-import { ApiService } from '../services/api/api.service';
+import { GamesState } from '../../reducers/games/game-state';
 import { Subscription } from 'rxjs';
 
 @Component ( {
@@ -13,9 +12,9 @@ import { Subscription } from 'rxjs';
 } )
 export class SmartComponent implements OnInit, OnDestroy {
   public ui : UiState;
-  public game: GameState;
-  private states = ['ui', 'game'];
-  private subscriptions: Subscription[] = [];
+  public game : GamesState;
+  private states = [ 'ui', 'game' ];
+  private subscriptions : Subscription[] = [];
 
   constructor (
     public store : Store<State>,
@@ -23,28 +22,33 @@ export class SmartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
-    this.onInit();
+    this.onInit ();
     this.initializeState ();
   }
 
   ngOnDestroy () : void {
-    this.subscriptions.forEach( sub => {
-      sub.unsubscribe();
-    });
+    this.subscriptions.forEach ( sub => {
+      sub.unsubscribe ();
+    } );
   }
-  public onInit() {
+
+  public onInit () {
     // over ride this if you want to add to extended;
   }
 
+  public updateSelected () {
+    console.log ( 'selected' );
+  }
+
   private initializeState () {
-    this.states.forEach( state => {
+    this.states.forEach ( state => {
       console.log ( 'you subscribed to', state );
       const stateSub = this.store.select ( state ).subscribe ( stateValue => {
-        this[state] = stateValue;
+        this[ state ] = stateValue;
         console.log ( 'state for ', state, stateValue );
-      });
-      this.subscriptions.push(stateSub);
-    });
+      } );
+      this.subscriptions.push ( stateSub );
+    } );
   }
 
 }

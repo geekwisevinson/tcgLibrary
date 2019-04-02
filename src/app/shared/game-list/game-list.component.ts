@@ -3,6 +3,7 @@ import { SmartComponent } from '../smart/smart.component';
 import { Store } from '@ngrx/store';
 import { State } from '../../reducers';
 import { GamesService } from '../services/services/games/games.service';
+import { gameActions } from '../../reducers/games/game-state';
 
 @Component ( {
   selector : 'vf-game-list',
@@ -20,11 +21,27 @@ export class GameListComponent extends SmartComponent {
   }
 
   onInit () {
-    console.log('call games');
-    this.games.getGames ().subscribe ( (games: any[]) => {
+    this.store.select ( 'games' ).subscribe ( games => {
+      console.log ( 'list', games );
+      if ( games ) {
+        this.gameList = games.list;
+      }
+    } );
+    this.getGames ();
+  }
+
+  public gameRemove ( game ) {
+    console.log ( game );
+    this.games.removeGame ( game ).subscribe ( () => {
+      this.getGames ();
+    } );
+  }
+
+  private getGames () {
+    this.games.getGames ().subscribe ( ( games : any[] ) => {
       console.log ( 'sub api games', games );
-      this.gameList = games;
-    });
+      this.store.dispatch ( gameActions.updateList ( games ) );
+    } );
   }
 
 }

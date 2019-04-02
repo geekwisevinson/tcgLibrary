@@ -8,16 +8,16 @@
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 import { UiReducer, UiState } from './ui/ui-state';
-import { gameActions, GameReducer, GameState } from './games/game-state';
+import { gameActions, GameReducer, GamesState } from './games/game-state';
 
 export interface State {
   ui : UiState;
-  game: GameState;
+  games: GamesState;
 }
 
 export const reducers : ActionReducerMap<State> = {
   ui : UiReducer,
-  game : GameReducer,
+  games : GameReducer,
 };
 
 export const stateActions = {

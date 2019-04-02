@@ -13,4 +13,7 @@ export class GamesService {
   public submitGame(game) {
     return this.api.addGame.post(game);
   }
+  public removeGame(game) {
+    return this.api.gameRemove.post(game);
+  }
 }

@@ -1,4 +1,5 @@
 <ng-container *ngIf="form">
+  <vf-error-display [error]="error"></vf-error-display>
   <form [formGroup]="form">
     <label for="title">Title</label>
     <input id="title" type="text" formControlName="title">
@@ -12,9 +13,9 @@
     <input id="os" type="text" formControlName="os">
     <div formArrayName="comments">
       <div *ngFor="let comment of form.get('comments').controls; let j=index">
-        <h4>Comments {{j+1}}</h4>
-        <div >
-          <input [formControlName]="j" />
+        <h4>Comments {{j + 1}}</h4>
+        <div>
+          <input [formControlName]="j"/>
         </div>
       </div>
       <button (click)="addComment(form.controls.comments)">Add new Comment</button>
@@ -22,8 +23,8 @@
     <div formGroupName="meta">
       <div *ngFor="let met of Object.keys(form.get('meta').controls); let j=index">
         <h4>Meta {{met}}</h4>
-        <div >
-          <input id="textInput" [type]="testNan(form.get('meta').controls[met])" [formControlName]="met" />
+        <div>
+          <input id="textInput" [type]="testNan(form.get('meta').controls[met])" [formControlName]="met"/>
         </div>
       </div>
 
@@ -36,8 +37,5 @@
   </form>
 
   <button (click)="submitGame()">Submit Game</button>
-  <pre>
-  {{form.value  | json}}
-</pre>
 </ng-container>
 
