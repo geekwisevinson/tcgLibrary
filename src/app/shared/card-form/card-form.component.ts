@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '../../reducers';
@@ -16,6 +16,7 @@ export class CardFormComponent extends SmartComponent implements OnInit {
   public Object = Object;
   public error;
 
+  @Input ()
   public questions : any = [
     { type : 'text', label : 'Title', prop : 'title', placeholder : 'Enter the card title', defaultValue : 'Halo' },
     { type : 'text', label : 'Developer', prop : 'developer', placeholder : 'Enter the card title', defaultValue : 'Microsoft' },
@@ -25,6 +26,7 @@ export class CardFormComponent extends SmartComponent implements OnInit {
     { type : 'form-array-text', label : 'Comments', prop : 'comments', dynamic : true, defaultValue : [ 'First Person', 'Shooter' ] },
     { type : 'form-array-object', label : 'Meta', prop : 'meta', dynamic : true, defaultValue : { votes : 2 } },
   ];
+  @Input ()
   public form : FormGroup;
 
   constructor (
@@ -37,7 +39,6 @@ export class CardFormComponent extends SmartComponent implements OnInit {
   }
 
   ngOnInit () {
-    this.form = this.fb.group ( this.createFormGroup ( this.questions ) );
   }
 
   public addComment ( control ) {
@@ -84,30 +85,8 @@ export class CardFormComponent extends SmartComponent implements OnInit {
     );
   }
 
-  public createFormGroup ( questions ) {
-    console.log ( questions );
-    const group = {};
-    questions.forEach ( q => {
-      if ( q.type === 'text' ) {
-        group[ q.prop ] = q.defaultValue ? q.defaultValue : '';
-      }
-      if ( q.type === 'checkbox' ) {
-        group[ q.prop ] = q.defaultValue ? q.defaultValue : false;
-      }
-      if ( q.type === 'form-array-text' ) {
-        group[ q.prop ] = this.fb.array ( q.defaultValue ? q.defaultValue : [] );
-      }
-      if ( q.type === 'form-array-object' ) {
-        group[ q.prop ] = this.fb.group ( q.defaultValue ? q.defaultValue : {} );
-        group[ `${ q.prop }PropName` ] = '';
-        q.propName = `${ q.prop }PropName`;
-      }
-    } );
-    console.log ( 'group', group );
-    return group;
-  }
 
   public removeS ( text ) {
-    return text[ text.length - 1 ].toLowerCase () === 's' ? text.substring(0, text.length - 1) : text;
+    return text[ text.length - 1 ].toLowerCase () === 's' ? text.substring ( 0, text.length - 1 ) : text;
   }
 }

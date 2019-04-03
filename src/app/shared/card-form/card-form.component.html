@@ -1,5 +1,5 @@
 <ng-container *ngIf="form">
-  <vf-error-display [error]="error"></vf-error-display>
+  <vf-error-display *ngIf="error" [error]="error"></vf-error-display>
   <form [formGroup]="form">
     <ng-container *ngFor="let question of questions">
 
