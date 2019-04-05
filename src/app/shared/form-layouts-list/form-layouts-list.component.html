@@ -1,0 +1,10 @@
+<div class="form-list">
+  <h2>Form List</h2>
+  <div class="form" *ngFor="let form of formList">
+    <button (click)="formRemove(form)">X</button>
+    <a [routerLink]="['/form']" [queryParams]="{form: form.title}" fragment="form">
+      {{form.title}}
+    </a>
+
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ApiService } from '../../api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ export class FormsService {
 
   constructor(
     private fb : FormBuilder,
+    private api: ApiService,
   ) { }
   public createFormGroup ( questions ) {
     console.log ( questions );
@@ -30,5 +32,12 @@ export class FormsService {
     } );
     console.log ( 'group', group );
     return this.fb.group(group);
+  }
+
+  public getForms() {
+    return this.api.forms.get();
+  }
+  public removeForm(game) {
+    return this.api.gameRemove.post(game);
   }
 }

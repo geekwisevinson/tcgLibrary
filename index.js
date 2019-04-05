@@ -56,21 +56,51 @@ http.listen(port, function () {
   console.log('listening on', port);
 });
 
+let requestID = 0;
+const myLogger = function (req, res, next) {
+  requestID++;
+  console.log('******************', requestID);
+  console.log( req.url);
+  next()
+};
 
+app.use(myLogger);
+
+
+
+
+
+
+
+
+
+
+
+
+// routes
 app.get('/', function catchRoute(req, res) {
   console.log('you came home');
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/games', function catchRoute(req, res) {
-  console.log('you got games');
+
+
+// api
+app.get('/forms-layout', function catchRoute(req, res, next) {
   Game.find({}).then(games => {
-    res.json(games);
-    console.log('found');
+    res.locals.result = games;
+    next();
   })
 });
 
-app.get('/body', function catchRoute(req, res, next) {
+app.get('/games', function catchRoute(req, res, next) {
+  Game.find({}).then(games => {
+    res.locals.result = games;
+    next();
+  })
+});
+
+app.get('/error', function catchRoute(req, res, next) {
   console.log('you got games');
   next(new Error('sucks'));
 });
@@ -88,7 +118,8 @@ app.post('/add-game', function catchRoute(req, res, next) {
       console.log('next', next);
       next(err);
     }else {
-      res.json(saved);
+      res.locals.result = saved;
+      next();
     }
 
   });
@@ -105,23 +136,44 @@ app.post('/game-remove', function catchRoute(req, res, next) {
       next(err);
     }else {
       console.log('successfully deleted', req.body);
-      res.json(result);
+      res.locals.result = result;
+      next();
     }
 
   });
 });
 
+
+
+
+
+
+// handlers
+
+
+// success
+app.use(function (req, res, next) {
+  if(!res.locals.result) {
+    next()
+  }
+  console.log(res.locals.result);
+  console.log( req.url);
+  console.log('******************', requestID);
+  res.json(  res.locals.result);
+});
+
+// not found
 app.get('*', function(req, res, next) {
   console.log(req.url, 'not found');
   let err = new Error('Page Not Found');
   err.statusCode = 404;
   next(err);
 });
-
+// error
 app.use(function(err, req, res, next) {
   console.log('----------');
   console.error(err.message); // Log error message in our server's console
-  console.log('----------');
+  console.log('----------', requestID);
   if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
   res.status(err.statusCode).send(err); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
