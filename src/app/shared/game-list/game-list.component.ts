@@ -41,7 +41,9 @@ export class GameListComponent extends SmartComponent {
     this.games.getGames ().subscribe ( ( games : any[] ) => {
       console.log ( 'sub api games', games );
       this.store.dispatch ( gameActions.updateList ( games ) );
-    } );
+    }, ( error ) => {
+        alert('Not Connected');
+    });
   }
 
 }
