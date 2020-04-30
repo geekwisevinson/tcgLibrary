@@ -37,6 +37,7 @@ export class ApiEndpoint {
   public postError;
   public putError;
   public deleteError;
+  private canLog = true;
   private session : any = {
     fingerprint : ''
   };
@@ -74,7 +75,7 @@ export class ApiEndpoint {
         }
       },
       error => {
-        console.log('i got an error from api', error);
+        console.log ( 'i got an error from api', error );
         try {
           apiRequest.response = error.json ();
         } catch ( e ) {
@@ -204,7 +205,8 @@ export class ApiEndpoint {
     return subscription;
   }
 
-  private prepareHeader ( headerType : headerProp | string, withCredentials? : boolean ) : { headers : HttpHeaders; withCredentials : boolean } {
+  private prepareHeader ( headerType : headerProp | string, withCredentials? : boolean )
+    : { headers : HttpHeaders; withCredentials : boolean } {
     let headers = new HttpHeaders ();
 
     if ( headerType === 'getTokenHeaders' ) {
@@ -248,5 +250,9 @@ export class ApiEndpoint {
       headers,
       withCredentials,
     };
+  }
+
+  public subscribe(subscription) {
+
   }
 }

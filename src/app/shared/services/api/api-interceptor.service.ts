@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
       timeout ( defaultTimeout ),
       tap ( ( evt : any ) => {
         evt.method = requestToForward.method;
+        console.log(`API//: ${req.method} :/ ${req.url}` );
       } ),
       catchError ( response => {
         response.url = requestToForward.url;

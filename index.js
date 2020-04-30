@@ -96,6 +96,7 @@ app.get('/forms-layout', function catchRoute(req, res, next) {
 app.get('/games', function catchRoute(req, res, next) {
   Game.find({}).then(games => {
     res.locals.result = games;
+    console.log('games', games);
     next();
   })
 });
@@ -152,7 +153,8 @@ app.post('/game-remove', function catchRoute(req, res, next) {
 
 
 // success
-app.use(function (req, res, next) {
+app.use(function resResults (req, res, next) {
+  console.log('results', res.locals)
   if(!res.locals.result) {
     next()
   }
